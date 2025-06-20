@@ -9,7 +9,7 @@ Basic Windows application using HTA with SOARE.
 
 ---
 
-## Make app with [SOARE](https://github.com/AntoineLandrieux)
+## Make app with [SOARE](https://github.com/AntoineLandrieux/SOARE/)
 
 ```soare
 ? Hello World! App
