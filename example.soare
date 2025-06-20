@@ -1,0 +1,116 @@
+
+loadimport "script/SHTApp.soare"
+
+
+let App = CreateApp(
+
+  "Click Me !";
+
+  WindowConfig(
+
+    "SoareApp";
+    "thin";
+    "normal";
+    "";
+    "yes";
+    "yes";
+    "no";
+    "no";
+    "no";
+    "yes";
+    "yes";
+    "normal"
+
+  );
+
+  600;
+  400
+
+);
+
+App = Insert(
+  App;
+  StyleSheet(`
+* {
+  color: #ffffff;
+  font-family: sans-serif;
+}
+
+h1 {
+  margin: 50px;
+  padding: 50px;
+  border: 5px solid #ffffff;
+}
+
+body {
+  background: #281c45;
+}
+
+marquee {
+  cursor: pointer;
+  width: 50%;
+}
+
+#clickme {
+  background: #000000;
+  padding: 20px;
+  text-decoration: none;
+  font-weight: bolder;
+}
+
+#clickme:hover {
+  background: #411d64;
+}
+  `)
+);
+
+App = Insert(
+  App;
+  OpenHTMLElement(
+    `center`;
+    ``;
+  )
+);
+
+App = Insert(
+  App;
+  HTMLElement(
+    `h1`;
+    ``;
+    `Hello World!`
+  )
+);
+
+App = Insert(
+  App;
+  HTMLElement(
+    `a`;
+    `href="https://github.com/AntoineLandrieux" id="clickme"`;
+    HTMLElement(
+      `marquee`;
+      ``;
+      `Click Me !`
+    )
+  )
+);
+
+App = Insert(
+  App;
+  CloseHTMLElement(
+    `center`;
+    ``
+  )
+)
+
+App = Insert(
+  App;
+  JavaScript(`
+var button = document.getElementById("clickme");
+
+button.onclick = function () {
+  alert("Yes !");
+};
+  `)
+);
+
+RunApp(App);

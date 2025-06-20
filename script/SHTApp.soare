@@ -1,0 +1,222 @@
+
+?
+?  _____ _   _ _____ ___
+? /  ___| | | |_   _/ _ \
+? \ `--.| |_| | | |/ /_\ \_ __  _ __
+?  `--. \  _  | | ||  _  | '_ \| '_ \
+? /\__/ / | | | | || | | | |_| | |_| |
+? \____/\_| |_/ \_/\_| |_/ .__/| .__/
+?                        | |   | |
+? SoareHTApp 2025 WTFPL  |_|   |_|
+? <https://github.com/AntoineLandrieux/SoareHTApp/>
+?
+
+? Version
+let __SOARE_SoareHTApp_VERSION__ = "1.0.0";
+
+?
+? - remln
+? - utils
+?
+? * string (string) Remove newline char ('\n')
+?
+fn remln(string)
+
+  let str = "";
+  let i = 0;
+
+  while 1 do
+    try
+      if string[i] != `\n` do
+        str = str, string[i];
+      else
+        str = str, ` `;
+      end;
+    iferror
+      return str;
+    end;
+    i = i + 1;
+  end;
+
+end;
+
+?
+? - WindowConfig
+?
+? * APPLICATIONNAME (string) Sets name of the application
+? * BORDER          (string) Sets type of window border ["thick"|"dialog"|"none"|"thin"]
+? * BORDERSTYLE     (string) Sets the style set for the content border ["normal"|"complex"|"raised"]
+? * ICON            (string) Sets the name and location of the icon
+? * CAPTION         (string) Display a title bar or a caption for the Application ["yes"|"no"]
+? * CONTEXTMENU     (string) The context menu is displayed when the right mouse button is clicked ["yes"|"no"]
+? * MAXIMIZEBUTTON  (string) Maximize button is displayed in the title bar ["yes"|"no"]
+? * MINIMIZEBUTTON  (string) Minimize button is displayed in the title bar ["yes"|"no"]
+? * SCROLL          (string) The scroll bars are displayed ["yes"|"no"]
+? * SHOWINTASKBAR   (string) Display in the Windows taskbar ["yes"|"no"]
+? * SYSMENU         (string) System menu is displayed in the Application ["yes"|"no"]
+? * WINDOWSTATE     (string) Sets the initial size of the Application ["normal"|"minimize"|"maximize"]
+?
+fn WindowConfig(
+
+  APPLICATIONNAME;
+  BORDER;
+  BORDERSTYLE;
+  ICON;
+  CAPTION;
+  CONTEXTMENU;
+  MAXIMIZEBUTTON;
+  MINIMIZEBUTTON;
+  SCROLL;
+  SHOWINTASKBAR;
+  SYSMENU;
+  WINDOWSTATE
+
+)
+
+  return `
+^<HTA:APPLICATION
+  ID="oHTA"
+  APPLICATIONNAME="`, APPLICATIONNAME, `"
+  BORDER="`, BORDER, `"
+  BORDERSTYLE="`, BORDERSTYLE, `"
+  ICON="`, ICON, `"
+  CAPTION="`, CAPTION, `"
+  CONTEXTMENU="`, CONTEXTMENU, `"
+  MAXIMIZEBUTTON="`, MAXIMIZEBUTTON, `"
+  MINIMIZEBUTTON="`, MINIMIZEBUTTON, `"
+  SCROLL="`, SCROLL, `"
+  SHOWINTASKBAR="`, SHOWINTASKBAR, `"
+  SYSMENU="`, SYSMENU, `"
+  WINDOWSTATE="`, WINDOWSTATE, `"
+/^>`;
+
+end;
+
+?
+? - DefaultWindowConfig
+? - Alias WindowConfig("SoareApp"; "thick"; "normal"; "yes"; "no"; ""; "yes"; "yes"; "yes"; "yes"; "yes"; "normal")
+?
+fn DefaultWindowConfig()
+
+  return WindowConfig (
+    "SoareApp"; "thick"; "normal"; ""; "yes"; "no"; "yes"; "yes"; "yes"; "yes"; "yes"; "normal"
+  );
+
+end;
+
+?
+? - CreateApp
+?
+? * Name                (string) Application name
+? * WindowConfiguration (string) Application Configuration 
+? * Width               (number) Application size (width)
+? * Height              (number) Application size (height)
+?
+fn CreateApp(Name; WindowConfiguration; Width; Height)
+
+  if __PLATFORM__ != "Windows" do
+    raise "Microsoft Windows(r) is required.";
+  end;
+
+  return `
+^<html^>
+^<head^>
+  ^<title^>`, Name, `^</title^>`,
+  WindowConfiguration, `
+  ^<script type="text/javascript"^>
+    window.onload = function() {
+      window.resizeTo(`, Width, `, `, Height, `);
+      window.moveTo((screen.availWidth - 600)/2, (screen.availHeight - 400)/2);
+    };
+  ^</script^>
+^</head^>
+^<body^>`;
+
+end;
+
+?
+? - Insert
+?
+? * App   (string) Application
+? * Name  (string) Raw code
+?
+fn Insert(App; Raw)
+
+  return App, Raw;
+
+end;
+
+?
+? - StyleSheet
+?
+? * CSS (string) CascadingStyleSheet code
+?
+fn StyleSheet(CSS)
+
+  return `^<style^>`, CSS, `^</style^>`
+
+end;
+
+?
+? - JavaScript
+?
+? * JS  (string) JavaScript code
+?
+fn JavaScript(JS)
+
+  return `^<script^ type="text/javascript"^>`, JS, `^</script^>`
+
+end;
+
+?
+? - HTMLElement
+?
+? * Tag         (string) Tag name
+? * Attributes  (string) Attributes
+? * Value       (string) Tag content
+?
+fn HTMLElement(Tag; Attributes; Value)
+
+  return `^<`, Tag, ` `, Attributes, `^>`, Value, `^</`, Tag, `^>`;
+
+end;
+
+?
+? - HTMLElement
+?
+? * Tag         (string) Tag name
+? * Attributes  (string) Attributes
+?
+fn OpenHTMLElement(Tag; Attributes)
+
+  return `^<`, Tag, ` `, Attributes, `^>`;
+
+end;
+
+?
+? - HTMLElement
+?
+? * Tag (string) Tag name
+?
+fn CloseHTMLElement(Tag)
+
+  return "^</", Tag ,"^>";
+
+end;
+
+?
+? - RunApp
+?
+? * App (string) Application
+?
+fn RunApp(App)
+
+  if __PLATFORM__ != "Windows" do
+    raise "Microsoft Windows(r) is required.";
+  end;
+
+  $`echo `, remln(App), `^</body^>^</html^> > "SoareApp.HTA"`;
+  $`start "" /wait "SoareApp.HTA"`
+  $`del /s /f /q "SoareApp.HTA" > nul`
+
+end;
