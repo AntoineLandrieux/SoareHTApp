@@ -13,24 +13,6 @@
 loadimport "script/SHTApp.soare"
 ```
 
-## Function: remln(string)
-
-**Purpose**: Remove all newline (\n) characters from a text and replace them with spaces.
-
-**How it works**:
-
-- Goes through each character in the text.
-- If the character is \n, it adds a space instead.
-- Otherwise, it keeps the character.
-
-**Example**:
-
-```soare
-loadimport "script/SHTApp.soare"
-
-write remln("Hello\nWorld!"); ? Hello World!
-```
-
 ## Function: WindowConfig(...)
 
 Purpose: Defines the appearance and behavior of your application window.
@@ -49,24 +31,31 @@ Parameters include:
 
 **WINDOWSTATE**: How the window starts (`normal`, `minimize`, `maximize`)
 
+> [!NOTE]
+>
+> See [Microsoft Documentation [HTA:APPLICATION]](https://learn.microsoft.com/en-us/previous-versions/ms536495(v=vs.85))
+>
+
 **Example**:
 
 ```soare
 loadimport "script/SHTApp.soare"
 
 let config = WindowConfig(
-  "SoareApp";
-  "thin";
-  "normal";
-  "";
-  "yes";
-  "yes";
-  "no";
-  "no";
-  "no";
-  "yes";
-  "yes";
-  "normal"
+
+  "SoareApp";   ? Application name
+  "thin";       ? Border
+  "normal";     ? Border style
+  "";           ? Icon
+  "yes";        ? Caption
+  "yes";        ? Context menu
+  "no";         ? Maximize button
+  "no";         ? Minimize button
+  "no";         ? Scroll
+  "yes";        ? Show in taskbar
+  "yes";        ? Sysmenu
+  "normal"      ? Window state
+
 );
 ```
 
@@ -234,4 +223,16 @@ let app = CreateApp("My App"; DefaultWindowConfig(); 400; 300);
 app = Insert(app; "Hello World!");
 
 RunApp(app);
+```
+
+## Variable: \_\_SOARE_SoareHTApp_VERSION\_\_
+
+**Purpose**: SoareHTApp version
+
+**Example**:
+
+```soare
+loadimport "script/SHTApp.soare"
+
+write "Using SoareHTApp v", __SOARE_SoareHTApp_VERSION__, '\n';
 ```

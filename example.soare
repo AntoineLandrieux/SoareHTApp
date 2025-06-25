@@ -1,6 +1,7 @@
 
 loadimport "script/SHTApp.soare"
 
+write "Using SoareHTApp v", __SOARE_SoareHTApp_VERSION__, '\n';
 
 let App = CreateApp(
 

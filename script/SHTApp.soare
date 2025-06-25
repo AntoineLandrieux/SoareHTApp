@@ -12,7 +12,7 @@
 ?
 
 ? Version
-let __SOARE_SoareHTApp_VERSION__ = "1.0.0";
+let __SOARE_SoareHTApp_VERSION__ = "1.1.0";
 
 ?
 ? - remln
@@ -22,15 +22,29 @@ let __SOARE_SoareHTApp_VERSION__ = "1.0.0";
 ?
 fn remln(string)
 
+  raise "Deprecated";
+
+end;
+
+?
+? - __str_prepare
+? - utils
+?
+? * string (string) Remove newline char ('\n') and change '<'|'>' to '^<'|'^>';
+?
+fn __str_prepare(string)
+
   let str = "";
   let i = 0;
 
   while 1 do
     try
-      if string[i] != `\n` do
-        str = str, string[i];
-      else
+      if string[i] == `\n` do
         str = str, ` `;
+      or string[i] == `<` || string[i] == `>` do
+        str = str, '^', string[i];
+      else
+        str = str, string[i];
       end;
     iferror
       return str;
@@ -74,7 +88,7 @@ fn WindowConfig(
 )
 
   return `
-^<HTA:APPLICATION
+<HTA:APPLICATION
   ID="oHTA"
   APPLICATIONNAME="`, APPLICATIONNAME, `"
   BORDER="`, BORDER, `"
@@ -88,7 +102,7 @@ fn WindowConfig(
   SHOWINTASKBAR="`, SHOWINTASKBAR, `"
   SYSMENU="`, SYSMENU, `"
   WINDOWSTATE="`, WINDOWSTATE, `"
-/^>`;
+/>`;
 
 end;
 
@@ -119,18 +133,18 @@ fn CreateApp(Name; WindowConfiguration; Width; Height)
   end;
 
   return `
-^<html^>
-^<head^>
-  ^<title^>`, Name, `^</title^>`,
+<html>
+<head>
+  <title>`, Name, `</title>`,
   WindowConfiguration, `
-  ^<script type="text/javascript"^>
+  <script type="text/javascript">
     window.onload = function() {
       window.resizeTo(`, Width, `, `, Height, `);
       window.moveTo((screen.availWidth - 600)/2, (screen.availHeight - 400)/2);
     };
-  ^</script^>
-^</head^>
-^<body^>`;
+  </script>
+</head>
+<body>`;
 
 end;
 
@@ -153,7 +167,7 @@ end;
 ?
 fn StyleSheet(CSS)
 
-  return `^<style^>`, CSS, `^</style^>`
+  return `<style>`, CSS, `</style>`
 
 end;
 
@@ -164,7 +178,7 @@ end;
 ?
 fn JavaScript(JS)
 
-  return `^<script^ type="text/javascript"^>`, JS, `^</script^>`
+  return `<script type="text/javascript">`, JS, `</script>`
 
 end;
 
@@ -177,7 +191,7 @@ end;
 ?
 fn HTMLElement(Tag; Attributes; Value)
 
-  return `^<`, Tag, ` `, Attributes, `^>`, Value, `^</`, Tag, `^>`;
+  return `<`, Tag, ` `, Attributes, `>`, Value, `</`, Tag, `>`;
 
 end;
 
@@ -189,7 +203,7 @@ end;
 ?
 fn OpenHTMLElement(Tag; Attributes)
 
-  return `^<`, Tag, ` `, Attributes, `^>`;
+  return `<`, Tag, ` `, Attributes, `>`;
 
 end;
 
@@ -200,7 +214,7 @@ end;
 ?
 fn CloseHTMLElement(Tag)
 
-  return "^</", Tag ,"^>";
+  return `</`, Tag ,`>`;
 
 end;
 
@@ -215,7 +229,7 @@ fn RunApp(App)
     raise "Microsoft Windows(r) is required.";
   end;
 
-  $`echo `, remln(App), `^</body^>^</html^> > "SoareApp.HTA"`;
+  $`echo `, __str_prepare(App, `</body></html>`), ` > "SoareApp.HTA"`;
   $`start "" /wait "SoareApp.HTA"`
   $`del /s /f /q "SoareApp.HTA" > nul`
 
