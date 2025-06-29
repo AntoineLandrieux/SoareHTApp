@@ -41,10 +41,8 @@ fn __str_prepare(string)
     try
       if string[i] == `\n` do
         str = str, ` `;
-      or string[i] == `<` || string[i] == `>` do
-        str = str, '^', string[i];
       else
-        str = str, string[i];
+        str = str, `^`, string[i];
       end;
     iferror
       return str;
