@@ -1,7 +1,3 @@
-#
-# Antoine LANDRIEUX (MIT License) <.gitignore>
-# <https://github.com/AntoineLandrieux/RepoTemplate/>
-#
 
 # IDE
 
@@ -16,11 +12,3 @@ min/
 tmp/
 
 *.hta
-
-# BIN
-
-*.a
-*.o
-*.bin
-*.exe
-*.res

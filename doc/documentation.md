@@ -42,7 +42,6 @@ Parameters include:
 loadimport "script/SHTApp.soare"
 
 let config = WindowConfig(
-
   "SoareApp";   ? Application name
   "thin";       ? Border
   "normal";     ? Border style
@@ -55,7 +54,6 @@ let config = WindowConfig(
   "yes";        ? Show in taskbar
   "yes";        ? Sysmenu
   "normal"      ? Window state
-
 );
 ```
 
@@ -234,5 +232,5 @@ RunApp(app);
 ```soare
 loadimport "script/SHTApp.soare"
 
-write "Using SoareHTApp v", __SOARE_SoareHTApp_VERSION__, '\n';
+write("Using SoareHTApp v"; __SOARE_SoareHTApp_VERSION__; '\n');
 ```
